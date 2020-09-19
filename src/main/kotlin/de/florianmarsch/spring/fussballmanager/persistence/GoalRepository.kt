@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GoalRepository : PagingAndSortingRepository<Goal?, String?>{
 
-    fun findByGameday(gameday: Int): List<Goal> {
+    fun findByGameday(gameday: Gameday): List<Goal> {
         return findAll()?.filterNotNull().orEmpty().filter {
-            it.gameday?.number == gameday
+            it.gameday?.number == gameday.number
         }
     }
 

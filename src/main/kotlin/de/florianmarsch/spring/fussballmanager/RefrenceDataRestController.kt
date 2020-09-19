@@ -41,7 +41,9 @@ class ReferenceDataRestController {
 
 	@GetMapping("/api/goals/{gameday}")
 	fun  getGoalsByGameday(@PathVariable(value="gameday")  gameday:Int) : List<Goal>? {
-		return goalRepo.findByGameday(gameday)?.filterNotNull()
+		return goalRepo.findByGameday(Gameday().apply {
+			number = gameday
+		})?.filterNotNull()
 	}
 
 	@PostMapping("/api/goals")
