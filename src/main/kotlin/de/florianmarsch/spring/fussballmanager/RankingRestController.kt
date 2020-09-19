@@ -44,7 +44,7 @@ class RankingDataRestController {
 					}
 				}.sum()
 			}
-		}.sortedBy {
+		}.sortedByDescending {
 			it.score
 		}
 
