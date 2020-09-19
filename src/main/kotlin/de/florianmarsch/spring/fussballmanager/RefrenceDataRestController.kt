@@ -62,7 +62,7 @@ class ReferenceDataRestController {
 	}
 
 	@GetMapping("/api/trainers")
-	fun getTrainer(@RequestBody trainer: Trainer) : List<Trainer>  {
+	fun getTrainer() : List<Trainer>  {
 		return trainerRepo.findAll().filterNotNull()
 	}
 
