@@ -53,7 +53,9 @@ class ReferenceDataRestController {
 
 	@PostMapping("/api/goals/{gameday}")
 	fun  saveGoals(@RequestBody goals:List<Goal>, @PathVariable(value="gameday")  gameday:Int) {
-		val findByGameday = goalRepo.findByGameday(gameday)?.filterNotNull()
+		val findByGameday = goalRepo.findByGameday(Gameday().apply {
+			number= gameday
+		})?.filterNotNull()
 		findByGameday?.let {
 			val deleted = it.toMutableList().apply {
 				removeAll(goals)
