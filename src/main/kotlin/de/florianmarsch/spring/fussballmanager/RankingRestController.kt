@@ -2,6 +2,7 @@ package de.florianmarsch.spring.fussballmanager
 
 import de.florianmarsch.spring.fussballmanager.persistence.*
 import de.florianmarsch.spring.fussballmanager.ranking.RankedLineUp
+import de.florianmarsch.spring.fussballmanager.ranking.RankedPlayer
 import de.florianmarsch.spring.fussballmanager.ranking.Ranking
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value
@@ -33,6 +34,15 @@ class RankingDataRestController {
 		val rankedLineUps:List<RankedLineUp> = lineups.map {
 			val currentLinup = it
 			RankedLineUp().apply {
+				lineUo = currentLinup.players.map {
+					val currentPlayer = it
+					RankedPlayer().apply{
+						name = currentPlayer.name
+						events = goals.filter {
+							it.player?.name == currentPlayer.name
+						}
+					}
+				}
 				trainer = it.id?.trainer
 				score = goals.filter {
 					currentLinup.players.contains(it.player)
