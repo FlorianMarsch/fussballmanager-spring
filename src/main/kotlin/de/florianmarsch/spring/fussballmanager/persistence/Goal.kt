@@ -12,7 +12,7 @@ class Goal() {
     @Column(nullable = false)
     var event: String? = null
 
-    @ManyToOne(optional = false, cascade = [CascadeType.ALL])
+    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST])
     var player: Player? = null
 
     @Column(nullable = false)
