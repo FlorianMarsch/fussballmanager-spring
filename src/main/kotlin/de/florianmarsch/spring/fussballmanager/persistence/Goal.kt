@@ -4,10 +4,12 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Goal() {
+data class Goal(
+        @Id
+        var id: String? = UUID.randomUUID().toString()
+) {
 
-    @Id
-    var id: String? = UUID.randomUUID().toString()
+
 
     @Column(nullable = false)
     var event: String? = null
