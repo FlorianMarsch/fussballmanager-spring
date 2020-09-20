@@ -15,4 +15,6 @@ interface GoalRepository : PagingAndSortingRepository<Goal?, String?>{
         }
     }
 
+    fun findByMatch(match: Int): List<Goal>
+
 }
