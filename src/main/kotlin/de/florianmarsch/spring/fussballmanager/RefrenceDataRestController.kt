@@ -61,7 +61,7 @@ class ReferenceDataRestController {
 		val findByMatch = goalRepo.findByMatch(match)?.filterNotNull()
 		logger.debug("Already has ${findByMatch.size} Goals for ${match}.")
 		findByMatch?.let {
-			val deleted = it.toMutableList().filter {
+			val deleted = it.filter {
 				goals.contains(it).not()
 			}
 
