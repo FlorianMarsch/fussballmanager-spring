@@ -14,7 +14,7 @@ data class Goal(
     @Column(nullable = false)
     var event: String? = null
 
-    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST])
+    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     var player: Player? = null
 
     @Column(nullable = false)

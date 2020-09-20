@@ -24,13 +24,14 @@ class RankingDataRestController {
 	@GetMapping("/api/ranking/{gameday}")
 	fun  getRanking(@PathVariable(value="gameday") gameday:Int) : Any {
 
-		val goals: List<Goal> = goalRepo.findAll()?.filterNotNull().orEmpty().filter {
-			it.gameday?.number == gameday
-		}
+		val goals: List<Goal> = goalRepo.findByGameday(Gameday().apply {
+			number = gameday
+		})?.filterNotNull().orEmpty()
 
-		val lineups: List<LineUp> = lineUpRepo.findAll()?.filterNotNull().orEmpty().filter {
-			it.id?.gameday?.number == gameday
-		}
+		val lineups: List<LineUp> = lineUpRepo.findById_Gameday(Gameday().apply {
+			number = gameday
+		})?.filterNotNull().orEmpty()
+
 		val rankedLineUps:List<RankedLineUp> = lineups.map {
 			val currentLinup = it
 			RankedLineUp().apply {
