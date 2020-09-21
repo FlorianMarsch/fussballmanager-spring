@@ -48,6 +48,11 @@ class ReferenceDataRestController {
 		return mapOf("number" to community)
 	}
 
+	@GetMapping("/api/gamedays")
+	fun  getGamedays() : List<Gameday> {
+		return gamedayRepo.findAll().filterNotNull()
+	}
+
 	@PostMapping("/api/gameday")
 	fun  saveGameday(@RequestBody gameday:Gameday) {
 		gamedayRepo.save(gameday)
