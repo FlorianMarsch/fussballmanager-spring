@@ -3,6 +3,8 @@ package de.florianmarsch.spring.fussballmanager
 import de.florianmarsch.spring.fussballmanager.persistence.*
 import de.florianmarsch.spring.fussballmanager.ranking.RankingRepository
 import de.florianmarsch.spring.fussballmanager.ranking.RankingService
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,10 +51,10 @@ class ReferenceDataRestController {
 	@PostMapping("/api/gameday")
 	fun  saveGameday(@RequestBody gameday:Gameday) {
 		gamedayRepo.save(gameday)
-
-		val createRanking = rankingService.createRanking(gameday)
-		rankingRepository.save(createRanking)
-
+		GlobalScope.async {
+			val createRanking = rankingService.createRanking(gameday)
+			rankingRepository.save(createRanking)
+		}
 	}
 
 	@GetMapping("/api/players")
