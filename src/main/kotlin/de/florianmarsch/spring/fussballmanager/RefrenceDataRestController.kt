@@ -1,12 +1,15 @@
 package de.florianmarsch.spring.fussballmanager
 
 import de.florianmarsch.spring.fussballmanager.persistence.*
+import de.florianmarsch.spring.fussballmanager.ranking.RankingRepository
+import de.florianmarsch.spring.fussballmanager.ranking.RankingService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.xml.bind.JAXBElement
 
 
 @RestController
@@ -29,9 +32,27 @@ class ReferenceDataRestController {
 	@Autowired
 	lateinit var trainerRepo : TrainerRepository
 
+	@Autowired
+	lateinit var gamedayRepo : GamedayRepository
+
+	@Autowired
+	lateinit var rankingRepository: RankingRepository
+
+	@Autowired
+	lateinit var rankingService: RankingService
+
 	@GetMapping("/api/community")
 	fun  getCommunity() : Map<String, Int?> {
 		return mapOf("number" to community)
+	}
+
+	@PostMapping("/api/gameday")
+	fun  saveGameday(@RequestBody gameday:Gameday) {
+		gamedayRepo.save(gameday)
+
+		val createRanking = rankingService.createRanking(gameday)
+		rankingRepository.save(createRanking)
+
 	}
 
 	@GetMapping("/api/players")

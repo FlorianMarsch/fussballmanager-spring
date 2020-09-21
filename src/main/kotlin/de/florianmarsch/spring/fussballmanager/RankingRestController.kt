@@ -2,8 +2,10 @@ package de.florianmarsch.spring.fussballmanager
 
 import de.florianmarsch.spring.fussballmanager.persistence.*
 import de.florianmarsch.spring.fussballmanager.ranking.RankedLineUp
-import de.florianmarsch.spring.fussballmanager.ranking.RankedPlayer
+import de.florianmarsch.spring.fussballmanager.ranking.RankedLineUpId
+
 import de.florianmarsch.spring.fussballmanager.ranking.Ranking
+import de.florianmarsch.spring.fussballmanager.ranking.RankingRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
@@ -14,57 +16,26 @@ import kotlin.math.absoluteValue
 class RankingDataRestController {
 
 	@Autowired
-	lateinit var goalRepo : GoalRepository
+	lateinit var rankingRepo : RankingRepository
 
-	@Autowired
-	lateinit var lineUpRepo : LineUpRepository
+
 
 	@GetMapping("/api/ranking/{gameday}")
-	fun  getRanking(@PathVariable(value="gameday") gameday:Int) : Any {
+	fun  getRanking(@PathVariable(value="gameday") gameday:Int): Ranking {
 
-		val goals: List<Goal> = goalRepo.findByGameday(Gameday().apply {
+		val theGameday = Gameday().apply {
 			number = gameday
-		})?.filterNotNull().orEmpty()
+		}
+		val findById = rankingRepo.findById(theGameday)
 
-		val lineups: List<LineUp> = lineUpRepo.findById_Gameday(Gameday().apply {
-			number = gameday
-		})?.filterNotNull().orEmpty()
-
-		val players : List<Player> =lineups.flatMap {
-			it.players
+		if(findById.isPresent){
+			return findById.get()
+		}else{
+			return Ranking(theGameday)
 		}
 
-		val relevantEvents = goals.filter {
-			players.contains(it.player)
-		}
-
-		val pointsPerScore : Float= if(relevantEvents.isEmpty()){0f}else{100f / relevantEvents.size}
-
-		val rankedLineUps:List<RankedLineUp> = lineups.map {
-			val currentLinup = it
-			RankedLineUp().apply {
-				trainer = it.id?.trainer
-				score = goals.filter {
-					currentLinup.players.contains(it.player)
-				}.map {
-					if(it.event == "Goal"){
-						1
-					}else{
-						-1
-					}
-				}.sum().coerceAtLeast(0)
-				points = (pointsPerScore*score).toInt()
-			}
-		}.sortedByDescending {
-			it.score
-		}
-
-		return Ranking().apply{
-			this.goals = relevantEvents
-			this.rankedLineUps = rankedLineUps
-			this.gameday = gameday
-		}
 	}
+
 
 
 }

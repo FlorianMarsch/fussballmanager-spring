@@ -7,20 +7,21 @@ import de.florianmarsch.spring.fussballmanager.persistence.Trainer
 import java.io.Serializable
 import javax.persistence.*
 
-class RankedPlayer {
-    var name : String?=null
-    var events : List<Goal> = emptyList()
-}
 
-class RankedLineUp {
+@Embeddable
+data class RankedLineUpId(        @Column var gameday : Gameday? = null,
+
+                                  @Column var trainer: Trainer? = null) : Serializable
+
+@Entity
+data class RankedLineUp(@Id var id:RankedLineUpId? = null) {
 
 
 
-
-        var trainer: Trainer? = null
-
+    @Column
         var score : Int = 0
 
+    @Column
         var points : Int = 0
 
 
