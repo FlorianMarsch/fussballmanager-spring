@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 
 @RestController
@@ -86,6 +87,30 @@ class ReferenceDataRestController {
 
 	@PostMapping("/api/lineUp")
 	fun saveLineUp(@RequestBody lineUp: LineUp) {
-		 lineUpRepo.save(lineUp)
+		val findById: Optional<LineUp?> = lineUpRepo.findById(lineUp.id!!)
+		if(findById.isPresent){
+
+			val currentLineUp: LineUp = findById.get()
+
+
+			val deleted = currentLineUp.players.filter {
+				lineUp.players.contains(it).not()
+			}
+			val new = lineUp.players.filter {
+				currentLineUp.players.contains(it).not()
+			}
+			currentLineUp.players = currentLineUp.players.toMutableList().apply {
+				removeAll(deleted)
+				addAll(new)
+			}
+			if(deleted.isEmpty().not() or new.isEmpty().not()){
+				lineUpRepo.save(currentLineUp)
+			}
+
+		}else{
+			lineUpRepo.save(lineUp)
+		}
+
+
 	}
 }

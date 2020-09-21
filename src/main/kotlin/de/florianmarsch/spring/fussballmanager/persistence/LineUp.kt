@@ -6,26 +6,26 @@ import javax.persistence.*
 
 
 @Entity
-class Player(){
-    @Id var name:String?=null
+data class Player(@Id var name:String?=null){
+
 }
 
 @Embeddable
-class LineUpId() : Serializable {
+data class LineUpId(    @Column(nullable = false)
+                        var trainer:Trainer? = null,
 
-    @Column(nullable = false)
-    var trainer:Trainer? = null
+                        @Column(nullable = false)
+var gameday:Gameday? = null) : Serializable {
 
-    @Column(nullable = false)
-    var gameday:Gameday? = null
+
 
 }
 
 @Entity
-class LineUp() {
+data class LineUp(
+        @EmbeddedId
+        var id: LineUpId? = null) {
 
-    @EmbeddedId
-    var id: LineUpId? = null
 
     @OneToMany(cascade = [CascadeType.ALL])
     var players : List<Player> = mutableListOf()
