@@ -21,8 +21,9 @@ class RankedLineUp {
 
         var score : Int = 0
 
-        var lineUo : List<RankedPlayer> = emptyList()
+        var lineUp : List<RankedPlayer> = emptyList()
 
+        var points : Int = 0
 
 
     }

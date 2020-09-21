@@ -7,6 +7,7 @@ import de.florianmarsch.spring.fussballmanager.ranking.Ranking
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
+import kotlin.math.absoluteValue
 
 
 @RestController
@@ -32,10 +33,20 @@ class RankingDataRestController {
 			number = gameday
 		})?.filterNotNull().orEmpty()
 
+		val players : List<Player> =lineups.flatMap {
+			it.players
+		}
+
+		val relevantEvents = goals.filter {
+			players.contains(it.player)
+		}
+
+		val pointsPerScore : Float= if(relevantEvents.isEmpty()){0f}else{100f / relevantEvents.size}
+
 		val rankedLineUps:List<RankedLineUp> = lineups.map {
 			val currentLinup = it
 			RankedLineUp().apply {
-				lineUo = currentLinup.players.map {
+				lineUp = currentLinup.players.map {
 					val currentPlayer = it
 					RankedPlayer().apply{
 						name = currentPlayer.name
@@ -53,7 +64,8 @@ class RankingDataRestController {
 					}else{
 						-1
 					}
-				}.sum()
+				}.sum().coerceAtLeast(0)
+				points = (pointsPerScore*score).toInt()
 			}
 		}.sortedByDescending {
 			it.score
