@@ -13,9 +13,6 @@ import kotlin.math.absoluteValue
 @RestController
 class RankingDataRestController {
 
-	@Value("\${community}")
-	private val community: Int? = null
-
 	@Autowired
 	lateinit var goalRepo : GoalRepository
 
@@ -46,15 +43,6 @@ class RankingDataRestController {
 		val rankedLineUps:List<RankedLineUp> = lineups.map {
 			val currentLinup = it
 			RankedLineUp().apply {
-				lineUp = currentLinup.players.map {
-					val currentPlayer = it
-					RankedPlayer().apply{
-						name = currentPlayer.name
-						events = goals.filter {
-							it.player?.name == currentPlayer.name
-						}
-					}
-				}
 				trainer = it.id?.trainer
 				score = goals.filter {
 					currentLinup.players.contains(it.player)
@@ -72,7 +60,7 @@ class RankingDataRestController {
 		}
 
 		return Ranking().apply{
-			this.totalNumberOfGoals = goals.size
+			this.goals = relevantEvents
 			this.rankedLineUps = rankedLineUps
 			this.gameday = gameday
 		}

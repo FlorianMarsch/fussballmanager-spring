@@ -4,7 +4,7 @@ import de.florianmarsch.spring.fussballmanager.persistence.Goal
 
 class Ranking {
 
-    var totalNumberOfGoals : Int = 0
+    var goals : List<Goal> = emptyList()
     var rankedLineUps:List<RankedLineUp> = emptyList()
     var gameday:Int = 0
 }
