@@ -71,7 +71,12 @@ class ReferenceDataRestController {
 				goalRepo.deleteAll(deleted)
 			}
 
+
+
 		}
+		playerRepo.saveAll(goals.map {
+			it.player
+		})
 		goalRepo.saveAll(goals)
 	}
 
