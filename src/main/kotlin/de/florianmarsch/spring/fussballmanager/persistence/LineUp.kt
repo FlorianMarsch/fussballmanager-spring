@@ -27,7 +27,8 @@ data class LineUp(
         var id: LineUpId? = null) {
 
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL],
+            orphanRemoval = true)
     var players : List<Player> = mutableListOf()
 
 
