@@ -11,10 +11,11 @@ data class Player(@Id var name:String?=null){
 }
 
 @Embeddable
-data class LineUpId(    @Column(nullable = false)
+data class LineUpId(
+        @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
                         var trainer:Trainer? = null,
 
-                        @Column(nullable = false)
+        @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
 var gameday:Gameday? = null) : Serializable {
 
 
@@ -27,8 +28,7 @@ data class LineUp(
         var id: LineUpId? = null) {
 
 
-    @OneToMany(cascade = [CascadeType.ALL],
-            orphanRemoval = true)
+    @ManyToMany( cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     var players : List<Player> = mutableListOf()
 
 

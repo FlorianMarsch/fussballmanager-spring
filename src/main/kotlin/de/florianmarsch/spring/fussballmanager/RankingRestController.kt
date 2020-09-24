@@ -1,11 +1,8 @@
 package de.florianmarsch.spring.fussballmanager
 
 import de.florianmarsch.spring.fussballmanager.persistence.*
-import de.florianmarsch.spring.fussballmanager.ranking.RankedLineUp
-import de.florianmarsch.spring.fussballmanager.ranking.RankedLineUpId
+import de.florianmarsch.spring.fussballmanager.ranking.*
 
-import de.florianmarsch.spring.fussballmanager.ranking.Ranking
-import de.florianmarsch.spring.fussballmanager.ranking.RankingRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.*
@@ -31,7 +28,7 @@ class RankingDataRestController {
 		if(findById.isPresent){
 			return findById.get()
 		}else{
-			return Ranking(theGameday)
+			return Ranking(RankingId(theGameday))
 		}
 
 	}

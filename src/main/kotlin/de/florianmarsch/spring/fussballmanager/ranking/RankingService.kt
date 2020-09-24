@@ -61,7 +61,7 @@ class RankingService {
 		return Ranking().apply {
 			this.goals = relevantEvents
 			this.rankedLineUps = rankedLineUps
-			this.gameday = gameday
+			this.id = RankingId(gameday)
 		}
 	}
 

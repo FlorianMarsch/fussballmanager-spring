@@ -9,9 +9,12 @@ import javax.persistence.*
 
 
 @Embeddable
-data class RankedLineUpId(        @Column var gameday : Gameday? = null,
+data class RankedLineUpId(
+        @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
+        var gameday : Gameday? = null,
 
-                                  @Column var trainer: Trainer? = null) : Serializable
+        @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
+                                   var trainer: Trainer? = null) : Serializable
 
 @Entity
 data class RankedLineUp(@Id var id:RankedLineUpId? = null) {

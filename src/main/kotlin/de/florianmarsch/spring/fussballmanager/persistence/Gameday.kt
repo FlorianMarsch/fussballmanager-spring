@@ -5,11 +5,13 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Gameday() :Serializable{
+data class Gameday(
+        @Id
+        var number: Int? = null
+) :Serializable{
 
 
-    @Id
-    var number: Int? = null
+
 
 
 

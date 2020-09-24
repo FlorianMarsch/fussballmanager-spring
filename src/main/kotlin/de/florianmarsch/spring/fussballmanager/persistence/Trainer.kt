@@ -5,14 +5,16 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Trainer() :Serializable {
+data class Trainer(
+        @Id
+        var number: Int? = null
+) :Serializable {
 
 
     @Column
     var name: String? = null
 
-    @Id
-    var number: Int? = null
+
 
 
 

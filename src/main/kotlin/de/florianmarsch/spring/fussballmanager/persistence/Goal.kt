@@ -17,7 +17,7 @@ data class Goal(
     @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     var player: Player? = null
 
-    @Column(nullable = false)
+    @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     var gameday: Gameday? = null
 
 
