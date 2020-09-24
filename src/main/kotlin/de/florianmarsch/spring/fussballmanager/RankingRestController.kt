@@ -23,7 +23,7 @@ class RankingDataRestController {
 		val theGameday = Gameday().apply {
 			number = gameday
 		}
-		val findById = rankingRepo.findById(theGameday)
+		val findById = rankingRepo.findById(RankingId(theGameday))
 
 		if(findById.isPresent){
 			return findById.get()
