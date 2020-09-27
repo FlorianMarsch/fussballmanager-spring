@@ -20,7 +20,6 @@ data class Goal(
     @ManyToOne(optional = false, cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     var gameday: Gameday? = null
 
-
     @Column(nullable = false)
     var match: Int? = null
 

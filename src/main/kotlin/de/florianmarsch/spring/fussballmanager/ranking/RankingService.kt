@@ -19,7 +19,23 @@ class RankingService {
 	lateinit var lineUpRepo : LineUpRepository
 
 	@Autowired
+	lateinit var rankingRepo : RankingRepository
+
+	@Autowired
 	lateinit var entityManager : EntityManager
+
+
+	fun remove(goals : List<Goal>){
+		rankingRepo.findAll().filterNotNull().forEach {
+
+
+			val current: MutableList<Goal> = it.goals.toMutableList()
+			if(current.removeAll(goals)){
+				it.goals = current
+				rankingRepo.save(it)
+			}
+		}
+	}
 
 	@GetMapping("/api/ranking")
 	fun test(): Any {

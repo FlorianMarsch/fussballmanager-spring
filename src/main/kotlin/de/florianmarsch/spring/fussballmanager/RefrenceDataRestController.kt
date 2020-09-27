@@ -96,6 +96,7 @@ class ReferenceDataRestController {
 
 			if(deleted.isEmpty().not()){
 				logger.debug("Need to delete ${deleted.size} Goals for ${match}.")
+				rankingService.remove(deleted)
 				goalRepo.deleteAll(deleted)
 			}
 
