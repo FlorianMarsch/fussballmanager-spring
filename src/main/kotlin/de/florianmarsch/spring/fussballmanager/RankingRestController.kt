@@ -37,7 +37,7 @@ class RankingDataRestController {
 	@GetMapping("/api/ranking")
 	fun  getRanking(): Any {
 
-		val result = mutableMapOf<Trainer,Int>()
+		val result = mutableMapOf<Trainer,RankedLineUp>()
 
 
 		val findById = rankingRepo.findAll().flatMap {
@@ -45,16 +45,23 @@ class RankingDataRestController {
 		}.forEach{ranked ->
 			val trainer = ranked.id?.trainer
 			trainer?.let{
-				result.putIfAbsent(trainer, 0)
+				result.putIfAbsent(trainer, RankedLineUp().apply {
+					score = 0
+					points = 0
+				})
 				result.get(trainer)?.let{
-					result.put(trainer, it.plus(ranked.points))
+					it.apply{
+						score = score + ranked.score
+						points = points + ranked.points
+					}
 				}
 			}
 		}
 		return result.keys.map {
 			mapOf<String,Any?>(
-					"number" to it ,
-					"score" to	result.get(it)
+					"trainer" to it ,
+					"score" to	result.get(it)?.score,
+					"points" to result.get(it)?.points
 			)
 		}
 
