@@ -37,7 +37,7 @@ class RankingService {
 		}
 	}
 
-	@GetMapping("/api/ranking")
+	//@GetMapping("/api/ranking")
 	fun test(): Any {
 
 		var query = JPAQuery<RankedLineUp>(entityManager)
